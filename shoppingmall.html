@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Webpage Title -->
+	<title>맥북프로 쇼핑몰</title>
+
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- JS -->   
+	<!-- <script async="" src="https://www.google-analytics.com/analytics.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- 구글폰트 -->
+	<link href="https://fonts.googleapis.com/css?family=Stylish&amp;display=swap" rel="stylesheet">
+
+	<script type="text/javascript">
+		function order() {
+			let name = $('#order_name').val();
+			let count = $('#order_count').val();
+			let address = $('#order_address').val();
+			let phone = $('#order_phone').val();
+			let item = '맥북프로동현';
+
+			$.ajax({
+				type: "POST",
+				url: "http://spartacodingclub.shop/order",
+				data: { name_give:name, count_give:count, address_give:address, phone_give:phone, item_give:item },
+				success: function(response){
+					if(response['result'] == 'success'){
+						alert('주문 완료!');
+						window.location.reload();
+					}
+				}
+			})
+		}
+
+		$(document).ready(function(){
+			$('#orders-box').html('');
+			listing();
+		});
+
+		function listing() {
+			$.ajax({
+				type: "GET",
+				url: "http://spartacodingclub.shop/order?item_give=맥북프로동현",
+				data: {},
+				success: function(response){
+					if (response['result'] == 'success') {
+						let orders = response['orders'];
+						for (let i = 0; i < orders.length; i++) {
+							make_card(orders[i]['item'],orders[i]['name'],orders[i]['count'],orders[i]['address'],orders[i]['phone'])
+						}
+					} else {
+						alert('주문을 받아오지 못했습니다');
+					}
+				}
+			})
+		}
+
+		function make_card(item,name,count,address,phone) {
+			let temp_html = '<tr>\
+			<td>'+item+'</td>\
+			<td>'+name+'</td>\
+			<td>'+count+'</td>\
+			<td>'+address+'</td>\
+			<td>'+phone+'</td>\
+			</tr>';
+			$('#orders-box').append(temp_html);
+		}
+	</script>
+
+	<style type="text/css">
+		* {
+			font-family: 'Stylish', sans-serif;
+		}
+		.wrap {
+			width: 500px;
+			margin: auto;
+		}
+		/*.img {
+			background-image: url('https://www.conscious-skincare.com/wp-content/uploads/2016/02/glc-candle-lit-with-new-gift-box.jpg');
+			background-size: cover;
+			background-position: center;
+			width: 500px;
+			height: 300px;
+			}*/
+			.info {
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			.user-info {
+				margin: 20px 5px auto 5px;
+			}
+			.title {
+				margin-top: 30px;
+				margin-bottom: 20px;
+			}
+			.text_title {
+				font-weight: bold;
+				font-size: 30px;
+				margin-right: 10px;
+			}
+			.text_subtitle {
+				font-size: 20px;
+			}
+			.order {
+				text-align: center;
+			}
+			.orders {
+				margin-top: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="img">
+				<img src="https://t1.daumcdn.net/cfile/tistory/270FB93C58252D731A">
+			</div>
+
+			<div class="title">
+				<span class="text_title">상품제목</span> <span class="text_subtitle">가격 : 1,000,000원 / 개</span>
+			</div>
+			<p>여러분께 맥북프로를 소개합니다 :)</p>
+			<div class="order_div">
+				<span class="text_title">주문하기</span>
+				<div class="info">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon3">주문자 이름</span>
+						</div>
+						<input type="text" class="form-control" id="order_name" aria-describedby="basic-addon3">
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="inputGroupSelect01">수량</label>
+						</div>
+						<select class="custom-select" id="order_count">
+							<option selected=""> -- 수량을 선택하세요 -- </option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon3">주소</span>
+						</div>
+						<input type="text" class="form-control" id="order_address" aria-describedby="basic-addon3">
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon3">전화번호</span>
+						</div>
+						<input type="text" class="form-control" id="order_phone" aria-describedby="basic-addon3">
+					</div>
+					<div class="order">
+						<button onclick="order()" type="button" class="btn btn-primary">주문하기</button>
+					</div>
+				</div>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">상품명</th>
+						<th scope="col">이름</th>
+						<th scope="col">수량</th>
+						<th scope="col">주소</th>
+						<th scope="col">전화번호</th>
+					</tr>
+				</thead>
+				<tbody id="orders-box">
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	</html>
