@@ -30,7 +30,7 @@
 
 			$.ajax({
 				type: "POST",
-				url: "http://spartacodingclub.shop/order",
+				url: "/order",
 				data: { name_give:name, count_give:count, address_give:address, phone_give:phone, item_give:item },
 				success: function(response){
 					if(response['result'] == 'success'){
@@ -49,7 +49,7 @@
 		function listing() {
 			$.ajax({
 				type: "GET",
-				url: "http://spartacodingclub.shop/order?item_give=맥북프로동현",
+				url: "/order?item_give=맥북프로동현",
 				data: {},
 				success: function(response){
 					if (response['result'] == 'success') {
